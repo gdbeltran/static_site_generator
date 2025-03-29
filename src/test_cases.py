@@ -202,6 +202,16 @@ class TestMarkdown(unittest.TestCase):
             ],
             new_nodes,
         )
+        
+    def test_split_images_non_image(self):
+        node = TextNode("This is text without an image. ![This is fake]", TextType.TEXT)
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual([TextNode("This is text without an image. ![This is fake]", TextType.TEXT)], new_nodes)
+        
+    def test_split_images_with_link(self):
+        node = TextNode("This is text with a link, not an image. [to boot dev](https://www.boot.dev)", TextType.TEXT)
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual([TextNode("This is text with a link, not an image. [to boot dev](https://www.boot.dev)", TextType.TEXT)], new_nodes)
     
     def test_split_links(self):
         node = TextNode(
@@ -220,6 +230,16 @@ class TestMarkdown(unittest.TestCase):
             ],
             new_nodes
         )
+        
+    def test_split_links_non_link(self):
+        node = TextNode("This is text without a link. [This is fake]", TextType.TEXT)
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual([TextNode("This is text without a link. [This is fake]", TextType.TEXT)], new_nodes)
+        
+    def test_split_links_with_image(self):
+        node = TextNode("This is text with an image, not a link. ![fake image](https://www.boot.dev)", TextType.TEXT)
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual([TextNode("This is text with an image, not a link. ![fake image](https://www.boot.dev)", TextType.TEXT)], new_nodes)
 
 if __name__ == "__main__":
     unittest.main()
