@@ -51,7 +51,11 @@ def text_to_textnodes(remaining_text):
     if not remaining_text:
         return []
     
-    first_group, start_index, matched_text = find_first_match(pattern, remaining_text)
+    result = find_first_match(pattern, remaining_text)
+    if result is None:
+        return [TextNode(remaining_text, TextType.TEXT)]
+    
+    first_group, start_index, matched_text = result
     nodes = []
     
     if start_index > 0:
@@ -69,7 +73,7 @@ def text_to_textnodes(remaining_text):
             nodes.append(TextNode(text, TextType.LINK, url))
         case ("image"):
             alt_text, img_url = parse_image(matched_text)
-            nodes.append(TextNode(alt_text, TextType.IMAGE, img_url))
+            nodes.append(TextNode(alt_text, TextType.IMAGE, img_url))       
     new_remaining_text = remaining_text[start_index + len(matched_text):]
     return nodes + text_to_textnodes(new_remaining_text)
 
