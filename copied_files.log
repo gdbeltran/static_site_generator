@@ -1,0 +1,11 @@
+2025-04-09 17:44:56,239:INFO:images
+2025-04-09 17:44:56,239:INFO:rivendell.png
+2025-04-09 17:44:56,240:INFO:Copied file ./static/images/rivendell.png to ./public/images/rivendell.png
+2025-04-09 17:44:56,240:INFO:tolkien.png
+2025-04-09 17:44:56,240:INFO:Copied file ./static/images/tolkien.png to ./public/images/tolkien.png
+2025-04-09 17:44:56,240:INFO:glorfindel.png
+2025-04-09 17:44:56,241:INFO:Copied file ./static/images/glorfindel.png to ./public/images/glorfindel.png
+2025-04-09 17:44:56,241:INFO:tom.png
+2025-04-09 17:44:56,241:INFO:Copied file ./static/images/tom.png to ./public/images/tom.png
+2025-04-09 17:44:56,241:INFO:index.css
+2025-04-09 17:44:56,241:INFO:Copied file ./static/index.css to ./public/index.css

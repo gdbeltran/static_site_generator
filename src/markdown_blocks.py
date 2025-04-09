@@ -78,14 +78,11 @@ def unordered_list_block(block):
     list_items = []
     
     for line in lines:
-        if line.strip() and line.strip().startswith("* "):
+        if line.strip() and line.strip().startswith("- "):
             item_text = line[2:].strip()
             text_nodes = text_to_children(item_text)
             list_item = ParentNode("li", text_nodes)
             list_items.append(list_item)
-            
-    if not list_items:
-        list_items = [ParentNode("li", [TextNode("", TextType.TEXT)])]
     
     ul_node = ParentNode("ul", list_items)
     return ul_node
@@ -100,9 +97,6 @@ def ordered_list_block(block):
             text_nodes = text_to_children(item_text)
             list_item = ParentNode("li", text_nodes)
             list_items.append(list_item)
-            
-    if not list_items:
-        list_items = [ParentNode("li", [TextNode("", TextType.TEXT)])]
     
     ol_node = ParentNode("ol", list_items)
     return ol_node
@@ -135,20 +129,25 @@ def markdown_to_html_node(markdown):
     new_blocks = []
     for block in blocks:
         block_type = block_to_block_type(block)
-        if block_type == BlockType.HEADING:
-            new_blocks.append(heading_block(block))
-        elif block_type == BlockType.UNORDERED_LIST:
-            new_blocks.append(unordered_list_block(block))
-        elif block_type == BlockType.ORDERED_LIST:
-            new_blocks.append(ordered_list_block(block))
-        elif block_type == BlockType.QUOTE:
-            blockquote_node = blockquote(block)
-            new_blocks.append(blockquote_node)
-        elif block_type == BlockType.CODE:
-            new_blocks.append(code_block(block))
-        elif block_type == BlockType.PARAGRAPH:
-            block_text = block.replace("\n", " ")
-            text_nodes = text_to_children(block_text)
-            new_blocks.append(ParentNode("p", text_nodes))
+        try:
+            if block_type == BlockType.HEADING:
+                new_blocks.append(heading_block(block))
+            elif block_type == BlockType.UNORDERED_LIST:
+                new_blocks.append(unordered_list_block(block))
+            elif block_type == BlockType.ORDERED_LIST:
+                new_blocks.append(ordered_list_block(block))
+            elif block_type == BlockType.QUOTE:
+                blockquote_node = blockquote(block)
+                new_blocks.append(blockquote_node)
+            elif block_type == BlockType.CODE:
+                new_blocks.append(code_block(block))
+            elif block_type == BlockType.PARAGRAPH:
+                block_text = block.replace("\n", " ")
+                text_nodes = text_to_children(block_text)
+                new_blocks.append(ParentNode("p", text_nodes))
+        except ValueError as e:
+            print(f"Error processing block: {block}")
+            print(f"Block type: {block_type}")
+            raise e
             
     return ParentNode("div", new_blocks)
